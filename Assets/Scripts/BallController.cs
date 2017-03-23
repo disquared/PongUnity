@@ -4,13 +4,34 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+    public float startForce;
+
+    private Rigidbody2D rigidBody;
+
+    public GameObject paddle1;
+    public GameObject paddle2;
+
+    // Use this for initialization
+    void Start () {
+		this.rigidBody = GetComponent<Rigidbody2D>();
+        this.rigidBody.velocity = new Vector2(this.startForce, this.startForce);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "GoalZone") {
+            if (transform.position.x < 0) {
+                transform.position = this.paddle2.transform.position + new Vector3(-1f, 0, 0);
+                this.rigidBody.velocity = new Vector2(-this.startForce, -this.startForce);
+            }
+            else {
+                transform.position = this.paddle1.transform.position + new Vector3(1f, 0, 0);
+                this.rigidBody.velocity = new Vector2(startForce, -startForce);
+            }
+        }
+    }
 }

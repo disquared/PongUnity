@@ -11,6 +11,8 @@ public class BallController : MonoBehaviour {
     public GameObject paddle1;
     public GameObject paddle2;
 
+    public GameManager gm;
+
     // Use this for initialization
     void Start () {
 		this.rigidBody = GetComponent<Rigidbody2D>();
@@ -24,13 +26,15 @@ public class BallController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "GoalZone") {
-            if (transform.position.x < 0) {
-                transform.position = this.paddle2.transform.position + new Vector3(-1f, 0, 0);
+            if (transform.position.x > 0) {
+                transform.position = this.paddle2.transform.position + new Vector3(-.25f, 0, 0);
                 this.rigidBody.velocity = new Vector2(-this.startForce, -this.startForce);
+                this.gm.UpdateScore(1);
             }
             else {
-                transform.position = this.paddle1.transform.position + new Vector3(1f, 0, 0);
+                transform.position = this.paddle1.transform.position + new Vector3(.25f, 0, 0);
                 this.rigidBody.velocity = new Vector2(startForce, -startForce);
+                this.gm.UpdateScore(2);
             }
         }
     }

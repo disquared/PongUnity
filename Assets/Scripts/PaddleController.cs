@@ -9,6 +9,9 @@ public class PaddleController : MonoBehaviour {
     private int direction;
     public float adjustSpeed;
 
+    public Transform upperLimit;
+    public Transform lowerLimit;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -32,6 +35,15 @@ public class PaddleController : MonoBehaviour {
         }
         else {
             this.direction = 0;
+        }
+
+        if (transform.position.y > this.upperLimit.position.y) {
+            transform.position = new Vector3(
+                transform.position.x, this.upperLimit.position.y, transform.position.z);
+        }
+        else if(transform.position.y < this.lowerLimit.position.y) {
+            transform.position = new Vector3(
+                transform.position.x, this.lowerLimit.position.y, transform.position.z);
         }
     }
 

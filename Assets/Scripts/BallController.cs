@@ -24,17 +24,17 @@ public class BallController : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter2D(Collider2D other) {
+    void OnTriggerEnter2D (Collider2D other) {
         if (other.tag == "GoalZone") {
             if (transform.position.x > 0) {
-                transform.position = this.paddle2.transform.position + new Vector3(-.25f, 0, 0);
+                transform.position = this.paddle2.transform.position + new Vector3(-.25f, 0);
                 this.rigidBody.velocity = new Vector2(-this.startForce, -this.startForce);
-                this.gm.UpdateScore(1);
+                this.gm.UpdateScore(Constants.PLAYER_ONE);
             }
             else {
-                transform.position = this.paddle1.transform.position + new Vector3(.25f, 0, 0);
+                transform.position = this.paddle1.transform.position + new Vector3(.25f, 0);
                 this.rigidBody.velocity = new Vector2(startForce, -startForce);
-                this.gm.UpdateScore(2);
+                this.gm.UpdateScore(Constants.PLAYER_TWO);
             }
         }
     }

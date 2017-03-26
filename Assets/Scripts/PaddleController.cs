@@ -12,25 +12,40 @@ public class PaddleController : MonoBehaviour {
     public Transform upperLimit;
     public Transform lowerLimit;
 
+    public bool isPlayerOne;
+
+    public bool isAI;
+    public BallController ballController;
+
 	// Use this for initialization
 	void Start () {
-		
+        this.ballController = FindObjectOfType<BallController>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.W)) {
+        if (isAI) {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                new Vector3(transform.position.x,
+                            this.ballController.transform.position.y,
+                            transform.position.z),
+                this.speed * Time.deltaTime);
+            return;
+        }
+
+        KeyCode paddleUpKey = isPlayerOne ? KeyCode.W : KeyCode.UpArrow;
+        KeyCode paddleDownKey = isPlayerOne ? KeyCode.S : KeyCode.DownArrow;
+        if (Input.GetKey(paddleUpKey)) {
             transform.position = new Vector3(
                 transform.position.x,
-                transform.position.y + (this.speed * Time.deltaTime),
-                0);
+                transform.position.y + (this.speed * Time.deltaTime));
             this.direction = 1;
         }
-        else if (Input.GetKey(KeyCode.S)) {
+        else if (Input.GetKey(paddleDownKey)) {
             transform.position = new Vector3(
                 transform.position.x,
-                transform.position.y - (this.speed * Time.deltaTime),
-                0);
+                transform.position.y - (this.speed * Time.deltaTime));
             this.direction = -1;
         }
         else {
@@ -47,7 +62,7 @@ public class PaddleController : MonoBehaviour {
         }
     }
 
-    void OnCollisionExit2D(Collision2D other) {
+    void OnCollisionExit2D (Collision2D other) {
         other.rigidbody.velocity = new Vector2(
             other.rigidbody.velocity.x * 1.1f,
             other.rigidbody.velocity.y + (this.adjustSpeed * this.direction));
